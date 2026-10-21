@@ -1,7 +1,7 @@
 # VRP Quantum Hello World: 11-Qubit Subspace Grover Optimization
 
 [![IBM Quantum Workflow](https://img.shields.io/badge/IBM%20Quantum-4--Step%20Pattern-0f62fe?logo=ibm)](https://quantum.cloud.ibm.com/docs/en/guides/hello-world)
-[![Qiskit Version](https://img.shields.io/badge/Qiskit-v1.0%2B-6929c4?logo=qiskit)](https://qiskit.org/)
+[![Qiskit Version](https://img.shields.io/badge/Qiskit-v2.x%20(Tested%202.6.0)-6929c4?logo=qiskit)](https://qiskit.org/)
 [![QOBLIB Benchmark](https://img.shields.io/badge/QOBLIB-09--routing%20(CVRP)-blue)](https://github.com/ZIB-AOPT/QOBLIB)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -118,8 +118,8 @@ Objective Value: 842
 ## Quickstart
 
 ### Prerequisites
-- Python 3.10+
-- Qiskit 1.0+
+- Python 3.10+ (Tested on Python 3.12)
+- Qiskit 2.x (Tested on Qiskit 2.6.0 & Aer 0.17+)
 
 ```bash
 git clone https://github.com/vkas0812-sys/vrp-quantum-hello-world.git
@@ -127,15 +127,32 @@ cd vrp-quantum-hello-world
 pip install -r requirements.txt
 ```
 
-### Run Python Script (Generates all plots and verification)
+### 1. Run Single Instance Demo (Step 1 to Step 5)
 ```bash
 python3 run_vrp_hello_world.py
 ```
 
-### Open Jupyter Notebook
+### 2. Run Full 55-Instance QOBLIB Campaign (Step 6)
+Executes all 55 instances, verifies capacity feasibility & exact cost against the official Rust checker, and generates comparison plots:
+```bash
+python3 run_all_55_quantum_simulator.py
+```
+
+### 3. Open Jupyter Notebook
 ```bash
 jupyter notebook VRP_Quantum_Hello_World.ipynb
 ```
+
+---
+
+## Full 55-Instance QOBLIB Benchmark Verification
+
+Across all 55 benchmark instances in QOBLIB `09-routing` (`XSH-n20-k4-01` to `XSH-n20-k4-55`), the Subspace formulation achieves:
+* **100% Pass Rate:** 55 / 55 instances verified valid by official Rust checker `check_cvrp`.
+* **Hardware Requirement:** Only **9 to 13 qubits** (mean: 11.75 qubits), down from 80 qubits (-85.32% physical qubit reduction).
+* **MacBook Simulation Speed:** Mean ~24 ms / instance on Apple Silicon using Qiskit 2.6.0.
+
+![Full 55-Instance Benchmark](plots/step6_55_instances_benchmark.png)
 
 ---
 
@@ -143,17 +160,20 @@ jupyter notebook VRP_Quantum_Hello_World.ipynb
 
 ```text
 vrp-quantum-hello-world/
-├── README.md                      # Documentation and benchmark overview
-├── VRP_Quantum_Hello_World.ipynb  # Interactive 5-step Jupyter Notebook
-├── run_vrp_hello_world.py         # Standalone CLI execution script
-├── requirements.txt               # Dependencies (qiskit, qiskit-aer, matplotlib, numpy)
-├── .gitignore                     # Git ignore rules
-└── plots/                         # High-resolution generated circuit diagrams & charts
+├── README.md                          # Documentation and benchmark overview
+├── VRP_Quantum_Hello_World.ipynb      # Interactive 6-step Jupyter Notebook
+├── run_vrp_hello_world.py             # Single-instance CLI execution script
+├── run_all_55_quantum_simulator.py     # Full 55-instance campaign runner & verifier
+├── quantum_55_instances_summary.json  # Detailed metrics for all 55 instances
+├── requirements.txt                   # Dependencies (qiskit, qiskit-aer, matplotlib, numpy)
+├── .gitignore                         # Git ignore rules
+└── plots/                             # High-resolution generated circuit diagrams & charts
     ├── step1_vrp_circuit.png
     ├── step2_isa_transpiled_circuit.png
     ├── step4_distribution_histogram.png
     ├── step4_observable_correlation.png
     ├── step4_qubit_comparison.png
+    ├── step6_55_instances_benchmark.png
     └── XSH-n20-k4-21_solution.sol
 ```
 

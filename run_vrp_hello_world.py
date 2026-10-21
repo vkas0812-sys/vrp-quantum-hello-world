@@ -1,9 +1,17 @@
 import os
+import sys
+
+# Configure matplotlib temp cache before importing to suppress sandbox/permission warnings
+os.environ['MPLCONFIGDIR'] = os.environ.get('MPLCONFIGDIR', '/tmp/matplotlib_cache')
+os.makedirs(os.environ['MPLCONFIGDIR'], exist_ok=True)
+
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 
+import qiskit
+import qiskit_aer
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import SparsePauliOp
 from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
@@ -17,6 +25,7 @@ os.makedirs(output_dir, exist_ok=True)
 
 print("=" * 70)
 print("  VRP QUANTUM EXPERIMENT - FOLLOWING IBM QUANTUM HELLO-WORLD PATTERN")
+print(f"  [Qiskit Core: {qiskit.__version__} | Aer Simulator: {qiskit_aer.__version__} | Python {sys.version.split()[0]}]")
 print("=" * 70)
 
 # ============================================================================
@@ -101,10 +110,6 @@ pub = (isa_circuit,)
 job = sampler.run([pub], shots=4096)
 result = job.result()
 pub_result = result[0]
-
-# Set matplotlib temp dir
-os.environ['MPLCONFIGDIR'] = '/tmp/matplotlib_cache'
-os.makedirs('/tmp/matplotlib_cache', exist_ok=True)
 
 # Retrieve measurement counts
 counts = None

@@ -12,3 +12,5 @@ __pycache__/
 
 # Temporary test outputs
 *.sol
+temp_solutions/
+quantum_55_instances_summary.json
